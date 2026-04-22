@@ -48,6 +48,12 @@ test.describe('Search for Books by Keywords', () => {
     await page.locator('#top-search-btn-wrap').click();
 
     //TODO check results contain keyword
+    await expect(page.locator('.srcfilter')).toContainText('tolkien');
+
+    // 2. Confirm the results count is visible and not zero
+    const resultsCount = page.locator('.sb-results-total');
+    await expect(resultsCount).toBeVisible();
+    await expect(resultsCount).not.toHaveText('0');
   });
 
     test('Test search by ISBN', async () => {
@@ -56,6 +62,12 @@ test.describe('Search for Books by Keywords', () => {
     await page.locator('#top-search-btn-wrap').click();
 
     //TODO check correct book is shown
-  });
+// 1. Check the breadcrumb/title element for the book name
+  await expect(page.locator('.pb-loc-last')).toContainText('Gone Girl');
 
+  // 2. Check the URL to make sure it redirected to the correct product page
+  await expect(page).toHaveURL(/9780307588371/);
+  });
 });
+
+
