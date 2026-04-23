@@ -10,6 +10,7 @@ push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 jobs:
   e2e:
     # TODO: Set the machine type this job runs on.
