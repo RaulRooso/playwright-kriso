@@ -6,11 +6,11 @@ name: Playwright E2E Tests
 #   - a pull request targeting the main branch
 # See README.md Part III — Step 2 for the syntax.
 on:
-push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
+  push:
+      branches: [ main ]
+    pull_request:
+      branches: [ main ]
+    workflow_dispatch:
 jobs:
   e2e:
     # TODO: Set the machine type this job runs on.
@@ -31,7 +31,7 @@ jobs:
       #   - Set node-version to '20'
       #   - Enable caching for npm
       # See README.md Part III — Step 5 for the full syntax.
-    - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
@@ -63,7 +63,7 @@ jobs:
       #   - Keep the artifact for 14 days (retention-days)
       # See README.md Part III — Step 9 for the full syntax.
       - name: Upload test report
-      if: always()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
