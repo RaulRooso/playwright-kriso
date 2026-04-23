@@ -9,9 +9,11 @@
 import { test, expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { HomePage } from '../../pages/HomePage';
+import { ProductPage } from '../../pages/ProductPage';
 
 let page: Page;
 let homePage: HomePage;
+let productPage: ProductPage;
 
 test.describe('Search for Books by Keywords (POM)', () => {
 
@@ -20,6 +22,7 @@ test.describe('Search for Books by Keywords (POM)', () => {
       page = await context.newPage();
   
       homePage = new HomePage(page);
+      productPage = new ProductPage(page);
   
       await homePage.openUrl();
       await homePage.acceptCookies();
@@ -39,16 +42,19 @@ test.describe('Search for Books by Keywords (POM)', () => {
     });
 
     test('Test search results contain keyword', async () => {
-    await homePage.searchByKeyword('tolkien');
-    await homePage.verifyResultsCountMoreThan(1)
-
-    //TODO check results contain keyword
-  });
+      await homePage.searchByKeyword('tolkien');
+      await homePage.verifyResultsCountMoreThan(1);
+      await homePage.verifyActiveFilterContains('tolkien');
+      await homePage.verifyResultsTotalVisible();
+      await homePage.verifyResultsTotalNotEmpty();
+    });
 
     test('Test search by ISBN', async () => {
-    await homePage.searchByKeyword('9780307588371');
+      const isbn = '9780307588371';
+      await homePage.searchByKeyword(isbn);
 
-    //TODO check correct book is shown
-  });
+      await productPage.verifyProductTitle('Gone Girl');
+      await productPage.verifyUrlContains(isbn);
+    });
 
 });

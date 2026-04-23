@@ -104,7 +104,3 @@ async function getResultCount(page: Page): Promise<number> {
     const text = await page.locator('.sb-results-total').textContent();
     return Number(text?.replace(/\D/g, '') || 0);
   }
-
-
- 
-

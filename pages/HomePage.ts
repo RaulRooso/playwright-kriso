@@ -1,6 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 import { CartPage } from './CartPage';
+import { MusicPage } from './MusicPage';
 
 export class HomePage extends BasePage {
   private readonly url = 'https://www.kriso.ee/';
@@ -11,6 +12,7 @@ export class HomePage extends BasePage {
   private readonly backButton: Locator;
   private readonly forwardButton: Locator;
   private readonly noResultsMessage: Locator;
+  private readonly activeFilter = this.page.locator('.srcfilter');
 
   constructor(page: Page) {
     super(page);
@@ -56,5 +58,22 @@ export class HomePage extends BasePage {
 
   async verifyNoProductsFoundMessage() {
     await expect(this.noResultsMessage).toContainText('Teie poolt sisestatud märksõnale vastavat raamatut ei leitud. Palun proovige uuesti!');
+  }
+
+  async verifyActiveFilterContains(text: string) {
+  await expect(this.activeFilter).toContainText(text);
+  }
+
+  async verifyResultsTotalVisible() {
+    await expect(this.resultsTotal).toBeVisible();
+  }
+
+  async verifyResultsTotalNotEmpty() {
+    await expect(this.resultsTotal).not.toHaveText('0');
+  }
+
+  async navigateToMusicBooks() {
+    await this.page.locator('.nav-wrap', { hasText: 'Muusikaraamatud ja noodid' }).click();
+    return new MusicPage(this.page);
   }
 }
